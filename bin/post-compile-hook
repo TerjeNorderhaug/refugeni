@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# set .m2 dir
+./bin/lein cljsbuild once
