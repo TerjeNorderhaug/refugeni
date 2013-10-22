@@ -19,15 +19,27 @@
 (defn fetch-some-jokes
   "Fetch some jokes from The Internet Chuck Norris Database up to given limit"
   [max-len]
-  (go
-    (loop [result (<! (fetch-some-joke))]
-      (if (< (count result) max-len)
-        (recur (str result "\n\n" (<! (fetch-some-joke))))
-        result))))
+  (let [c (chan)]
+    (go
+      (loop [len 0]
+        (if (< len max-len)
+          (let [joke (<! (fetch-some-joke))]
+            (put! c joke)
+            (recur (+ len (count joke))))
+          (close! c))))
+    c))
 
 (defn handler [req res]
   (.writeHead res 200 {"Content-Type" "text/plain"})
-  (go (.end res (<! (fetch-some-jokes 100)))))
+  (let [jokes-chan (fetch-some-jokes 500)]
+    (go
+      (while
+        (when-let [joke (<! jokes-chan)]
+          (.write res joke)
+          ;; (<! (timeout 2000))
+          ;; curl http://127.0.0.1:1337/
+          (.write res "\n\n")))
+      (.end res))))
 
 (defn server [handler port]
   (-> (.createServer http handler)
