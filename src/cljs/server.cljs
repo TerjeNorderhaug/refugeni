@@ -1,7 +1,9 @@
 (ns server
+  (:require-macros [cljs.core.async.macros :as m :refer [go alt!]])
   (:require [cljs.nodejs :as nodejs]
-            [cljs.core.async :refer [chan close! timeout put! map<]])
-  (:require-macros [cljs.core.async.macros :as m :refer [go alt!]]))
+            [cljs.core.async :refer [chan close! timeout put! map<]]
+            [JSON]))
+
 
 (enable-console-print!)
 
