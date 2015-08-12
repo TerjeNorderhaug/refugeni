@@ -1,8 +1,7 @@
 (ns server
   (:require-macros [cljs.core.async.macros :as m :refer [go alt!]])
   (:require [cljs.nodejs :as nodejs]
-            [cljs.core.async :refer [chan close! timeout put! map<]]
-            [js/JSON]))
+            [cljs.core.async :refer [chan close! timeout put! map<]]))
 
 
 (enable-console-print!)
@@ -16,7 +15,7 @@
     (.get http "http://api.icndb.com/jokes/random"
           (fn [res]
             (.on res "data" (fn [data]
-                              (let [response (js->clj (JSON/parse data))]
+                              (let [response (js->clj (.parse js/JSON data))]
                                 (put! c (get-in response ["value" "joke"])))))))
     c))
 
