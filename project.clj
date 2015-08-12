@@ -12,6 +12,7 @@
   :clean-targets [^{:protect false}
                   [:cljsbuild :builds 0 :compiler :output-to]
                   :target-path :compile-path]
+  :node-dependencies [[express "4.13.3"]]
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
