@@ -15,6 +15,6 @@
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
-                           :output-to "resources/js/server.js"
+                           :output-to "out/js/server.js"
                            :optimizations :simple
                            :pretty-print true}}]})

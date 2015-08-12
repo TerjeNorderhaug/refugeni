@@ -1,1 +1,1 @@
-web: node resources/js/server.js
+web: node out/js/server.js
