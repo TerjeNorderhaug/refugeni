@@ -4,7 +4,7 @@ lein compile
 
 # Inspired by https://github.com/ddollar/heroku-buildpack-multi/blob/master/bin/compile
 # executed from the Clojure buildpack so retains its environment - but thats a hack...
-echo "{}" > $BUILD_DIR/package.json
+# echo "{}" > $BUILD_DIR/package.json
 BUILDPACK="https://github.com/heroku/heroku-buildpack-nodejs.git"
 dir=$(mktemp -t buildpackXXXXX)
 url=${BUILDPACK%#*}
