@@ -7,7 +7,8 @@
                  [org.clojure/clojurescript "1.7.48"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
 
-  :npm {:dependencies [[express "4.13.3"]]}
+  :npm {:dependencies [[express "4.13.3"]]
+        :root :target-path}
 
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
             [lein-cljsbuild "1.0.6"]
