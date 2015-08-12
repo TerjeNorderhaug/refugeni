@@ -6,13 +6,18 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.48"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
+
+  :node-dependencies [[express "4.13.3"]]
+
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
             [lein-cljsbuild "1.0.6"]]
+
   :min-lein-version "2.0.0"
+
   :clean-targets [^{:protect false}
                   [:cljsbuild :builds 0 :compiler :output-to]
                   :target-path :compile-path]
-  :node-dependencies [[express "4.13.3"]]
+
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
