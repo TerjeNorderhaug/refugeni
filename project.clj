@@ -10,7 +10,8 @@
   :node-dependencies [[express "4.13.3"]]
 
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
-            [lein-cljsbuild "1.0.6"]]
+            [lein-cljsbuild "1.0.6"]
+            [lein-npm "0.6.1"]]
 
   :min-lein-version "2.0.0"
 
