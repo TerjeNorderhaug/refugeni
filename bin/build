@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# Lets get a random uuid and save it to build_id.
-# We use it for permanent caching of assets fronted by cloudfront.
-cat /proc/sys/kernel/random/uuid > build_id
-
-echo "Running cljsbuild for your build ids";
-# lein with-profile prod cljsbuild once server site
 lein cljsbuild once
 
 # Inspired by https://github.com/ddollar/heroku-buildpack-multi/blob/master/bin/compile
