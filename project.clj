@@ -9,9 +9,9 @@
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
             [lein-cljsbuild "1.0.6"]]
   :min-lein-version "2.0.0"
-  :clean-targets ^{:protect false}
-                  [[:cljsbuild :builds 0 :compiler :output-to]
-                    :target-path :compile-path]
+  :clean-targets [^{:protect false}
+                  [:cljsbuild :builds 0 :compiler :output-to]
+                  :target-path :compile-path]
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
