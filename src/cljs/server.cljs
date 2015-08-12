@@ -2,7 +2,7 @@
   (:require-macros [cljs.core.async.macros :as m :refer [go alt!]])
   (:require [cljs.nodejs :as nodejs]
             [cljs.core.async :refer [chan close! timeout put! map<]]
-            [JSON]))
+            [js/JSON]))
 
 
 (enable-console-print!)
