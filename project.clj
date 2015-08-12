@@ -3,11 +3,12 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-1934"]
-                 [org.clojure/core.async "0.1.242.0-44b1e3-alpha"]]
-  :plugins [[org.bodil/lein-noderepl "0.1.10"]
-            [lein-cljsbuild "0.3.4"]]
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/clojurescript "1.7.48"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
+  :plugins [[org.bodil/lein-noderepl "0.1.11"]
+            [lein-cljsbuild "1.0.6"]]
+  :min-lein-version "2.0.0"
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
