@@ -7,7 +7,7 @@
 (enable-console-print!)
 
 (def http (nodejs/require "http"))
-(def express (nodejs/require "express"))
+; (def express (nodejs/require "express"))
 
 (defn fetch-some-joke
   "Fetch joke from The Internet Chuck Norris Database"
