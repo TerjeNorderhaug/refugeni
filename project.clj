@@ -14,6 +14,8 @@
 
   :min-lein-version "2.0.0"
 
+  :hooks [leiningen.cljsbuild]
+
   :clean-targets [^{:protect false}
                   [:cljsbuild :builds 0 :compiler :output-to]
                   :target-path :compile-path]
