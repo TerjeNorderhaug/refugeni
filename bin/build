@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-lein do deps, compile
-
 # Inspired by https://github.com/ddollar/heroku-buildpack-multi/blob/master/bin/compile
 # executed from the Clojure buildpack so retains its environment - but thats a hack...
 echo "{}" > $BUILD_DIR/package.json
@@ -15,3 +13,7 @@ chmod -f +x $dir/bin/{detect,compile,release} || true
 framework=$($dir/bin/detect $BUILD_DIR)
 echo "=====> Using Framework: $framework"
 $dir/bin/compile $BUILD_DIR $CACHE_DIR $ENV_DIR
+
+# with node in place we can build cljs:
+
+lein do deps, compile
