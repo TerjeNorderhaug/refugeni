@@ -17,6 +17,8 @@
 
   :hooks [leiningen.cljsbuild]
 
+  :main "out/js/server.js"
+
   :clean-targets [^{:protect false}
                   [:cljsbuild :builds 0 :compiler :output-to]
                   :target-path :compile-path]
