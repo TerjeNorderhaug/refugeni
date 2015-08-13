@@ -30,11 +30,4 @@
                            :output-to "target/out/server.js"
                            :jar true
                            :optimizations :simple
-                           :pretty-print true}}
-               ; temporary patch until my fix for lein-npm is official:
-               {:source-paths ["src/cljs"]
-                :compiler {:target :nodejs
-                           :output-to "target/target/out/server.js"
-                           :jar true
-                           :optimizations :simple
                            :pretty-print true}}]})

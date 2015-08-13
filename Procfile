@@ -1,1 +1,1 @@
-web: lein run
+web: node target/js/server.js
