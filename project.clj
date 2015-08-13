@@ -9,7 +9,7 @@
 
   :npm {:dependencies [[express "4.13.3"]]
         ; writeable package.json on heroku - should be :target-path
-        :root "tmp"}
+        :root "target"}
 
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
             [lein-cljsbuild "1.0.6"]
@@ -28,7 +28,7 @@
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
-                           :output-to "tmp/out/server.js"
+                           :output-to "target/out/server.js"
                            :jar true
                            :optimizations :simple
                            :pretty-print true}}]})
