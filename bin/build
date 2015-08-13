@@ -20,5 +20,5 @@ $dir/bin/compile $BUILD_DIR $CACHE_DIR $ENV_DIR
 
 
 echo "=====> ClojureScript with npm:"
-cd $HOME
+cd $BUILD_DIR
 lein do deps, compile
