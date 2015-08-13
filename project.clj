@@ -18,7 +18,7 @@
 
   :hooks [leiningen.cljsbuild]
 
-  :main "out/js/server.js"
+  :main "target/out/server.js"
 
   :clean-targets [^{:protect false}
                   [:cljsbuild :builds 0 :compiler :output-to]
@@ -27,8 +27,14 @@
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
-                           :output-to "target/out/js/server.js"
-                           :output-dir "target"
+                           :output-to "target/out/server.js"
+                           :jar true
+                           :optimizations :simple
+                           :pretty-print true}}
+               ; temporary patch until my fix for lein-npm is official:
+               {:source-paths ["src/cljs"]
+                :compiler {:target :nodejs
+                           :output-to "target/target/out/server.js"
                            :jar true
                            :optimizations :simple
                            :pretty-print true}}]})
