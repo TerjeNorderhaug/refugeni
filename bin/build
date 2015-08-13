@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # lein cljsbuild once
-lein npm install
-lein do deps, compile
+# lein npm install
+# lein do deps, compile
 
 # Inspired by https://github.com/ddollar/heroku-buildpack-multi/blob/master/bin/compile
 # executed from the Clojure buildpack so retains its environment - but thats a hack...
@@ -16,4 +16,9 @@ cd $dir
 chmod -f +x $dir/bin/{detect,compile,release} || true
 framework=$($dir/bin/detect $BUILD_DIR)
 echo "=====> Using Framework: $framework"
-# $dir/bin/compile $BUILD_DIR $CACHE_DIR $ENV_DIR
+$dir/bin/compile $BUILD_DIR $CACHE_DIR $ENV_DIR
+
+
+echo "=====> ClojureScript with npm:"
+cd $HOME
+lein do deps, compile
