@@ -1,1 +1,1 @@
-web: lein npm start target/js/server.js
+web: lein npm start target/out/server.js
