@@ -34,24 +34,20 @@
     c))
 
 (defn handler [req res]
-  (.writeHead res 200 {"Content-Type" "text/plain"})
   (let [jokes-chan (fetch-some-jokes 500)]
     (go
       (while
         (when-let [joke (<! jokes-chan)]
-          (.write res joke)
-          ;; (<! (timeout 2000))
-          ;; curl http://127.0.0.1:1337/
-          (.write res "\n\n")))
-      (.end res))))
+          (.send res joke))))))
 
-(defn server [handler port]
-  (-> (.createServer http handler)
-      (.listen port)))
+(defn server [handler port cb]
+  (let [app (express)]
+    (.get app "/" handler)
+    (.listen app port cb)))
 
 (defn -main [& mess]
   (let [port (or (.-PORT (.-env js/process)) 1337)]
-    (server handler port)
-    (println (str "Server running at http://127.0.0.1:" port "/"))))
+    (server handler port
+            #(println (str "Server running at http://127.0.0.1:" port "/")))))
 
 (set! *main-cli-fn* -main)
