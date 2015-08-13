@@ -1,6 +1,6 @@
 # cljsnode
 
-Clojurescript web server using node on Heroku.
+Clojurescript based website using node express on Heroku.
 
 ## Run Locally
 
