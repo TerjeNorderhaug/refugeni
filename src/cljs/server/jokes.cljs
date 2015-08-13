@@ -1,8 +1,7 @@
 (ns server.jokes
-  (:require-macros [cljs.core.async.macros :as m :refer [go go-loop alt!]])
+  (:require-macros [cljs.core.async.macros :refer [go go-loop]])
   (:require [cljs.nodejs :as nodejs]
-            [cljs.core.async :as async :refer [chan close! timeout put! map<]]
-            [clojure.string :as string]))
+            [cljs.core.async :as async :refer [chan close! timeout put!]]))
 
 (def http (nodejs/require "http"))
 
@@ -21,11 +20,10 @@
   "Fetch some jokes from The Internet Chuck Norris Database up to given char limit"
   [max-len]
   (let [c (chan)]
-    (go
-      (loop [len 0]
-        (if (< len max-len)
-          (let [joke (<! (fetch-some-joke))]
-            (put! c joke)
-            (recur (+ len (count joke))))
-          (close! c))))
+    (go-loop [len 0]
+      (if (< len max-len)
+        (let [joke (<! (fetch-some-joke))]
+          (put! c joke)
+          (recur (+ len (count joke))))
+        (close! c)))
     c))
