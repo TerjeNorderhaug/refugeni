@@ -7,7 +7,7 @@ Clojurescript web server using node on Heroku.
 To start a server on your own computer:
 
     lein compile
-    lein run
+    lein npm start
 
 Point your browser to the displayed local port..
 

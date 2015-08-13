@@ -1,7 +1,8 @@
 (ns server
-  (:require-macros [cljs.core.async.macros :as m :refer [go alt!]])
+  (:require-macros [cljs.core.async.macros :as m :refer [go go-loop alt!]])
   (:require [cljs.nodejs :as nodejs]
-            [cljs.core.async :as async :refer [chan close! timeout put! map<]]))
+            [cljs.core.async :as async :refer [chan close! timeout put! map<]]
+            [clojure.string :as string]))
 
 (enable-console-print!)
 
@@ -35,9 +36,13 @@
 
 (defn handler [req res]
   (let [jokes-chan (fetch-some-jokes 500)]
-    (go
-      (let [content (take 2 (repeatedly #(<! %) jokes-chan))]
-        (.send res (apply str content))))))
+    (go-loop [content nil]
+      (let [joke (<! jokes-chan)]
+        (if (some? joke)
+          (recur (cons joke content))
+          (do
+            (.set res "Content-Type" "text/plain")
+            (.send res (string/join "\n\n" content))))))))
 
 (defn server [handler port cb]
   (let [app (express)]
