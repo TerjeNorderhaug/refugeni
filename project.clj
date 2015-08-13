@@ -8,8 +8,7 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
 
   :npm {:dependencies [[express "4.13.3"]]
-        ; writeable package.json on heroku - should be :target-path
-        :root "target"}
+        :root :target-path}
 
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
             [lein-cljsbuild "1.0.6"]
