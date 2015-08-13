@@ -11,14 +11,14 @@
         :root :target-path}
 
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
-            [lein-npm "0.6.1"]
-            [lein-cljsbuild "1.0.6"]]
+            [lein-cljsbuild "1.0.6"]
+            [lein-npm "0.6.1"]]
 
   :min-lein-version "2.0.0"
 
   :hooks [leiningen.cljsbuild]
 
-  :main "server.js"
+  :main "out/js/server.js"
 
   :clean-targets [^{:protect false}
                   [:cljsbuild :builds 0 :compiler :output-to]
@@ -27,7 +27,8 @@
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
-                           :output-to "target/server.js"
-                           :output-dir "out"
+                           :output-to "target/out/js/server.js"
+                           :output-dir "target"
+                           :jar true
                            :optimizations :simple
                            :pretty-print true}}]})
