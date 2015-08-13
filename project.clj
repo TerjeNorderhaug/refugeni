@@ -8,7 +8,8 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
 
   :npm {:dependencies [[express "4.13.3"]]
-        :root "tmp"} ; :target-path}
+        ; writeable package.json on heroku - should be :target-path
+        :root "tmp"}
 
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
             [lein-cljsbuild "1.0.6"]
@@ -18,7 +19,7 @@
 
   :hooks [leiningen.cljsbuild]
 
-  :main "target/out/server.js"
+  :main "out/server.js"
 
   :clean-targets [^{:protect false}
                   [:cljsbuild :builds 0 :compiler :output-to]
@@ -27,7 +28,7 @@
   :cljsbuild {:builds
               [{:source-paths ["src/cljs"]
                 :compiler {:target :nodejs
-                           :output-to "target/out/server.js"
+                           :output-to "tmp/out/server.js"
                            :jar true
                            :optimizations :simple
                            :pretty-print true}}]})
