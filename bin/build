@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # lein cljsbuild once
+lein npm install
 lein do deps, compile
 
 # Inspired by https://github.com/ddollar/heroku-buildpack-multi/blob/master/bin/compile
