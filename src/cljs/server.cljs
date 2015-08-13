@@ -1,7 +1,7 @@
 (ns server
   (:require-macros [cljs.core.async.macros :as m :refer [go alt!]])
   (:require [cljs.nodejs :as nodejs]
-            [cljs.core.async :refer [chan close! timeout put! map<]]))
+            [cljs.core.async :as async :refer [chan close! timeout put! map<]]))
 
 (enable-console-print!)
 
@@ -36,9 +36,8 @@
 (defn handler [req res]
   (let [jokes-chan (fetch-some-jokes 500)]
     (go
-      (while
-        (when-let [joke (<! jokes-chan)]
-          (.send res joke))))))
+      (let [content (take 2 (repeatedly #(<! %) jokes-chan))]
+        (.send res (apply str content))))))
 
 (defn server [handler port cb]
   (let [app (express)]
