@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # lein cljsbuild once
-lein do npm init -f, npm install, compile
+lein do deps, compile
 
 # Inspired by https://github.com/ddollar/heroku-buildpack-multi/blob/master/bin/compile
 # executed from the Clojure buildpack so retains its environment - but thats a hack...
