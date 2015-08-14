@@ -21,6 +21,7 @@
 (defn server [handler port cb]
   (doto (express)
     (.get "/" handler)
+    (.use (.static express "../resources/public"))
     (.listen port cb)))
 
 (defn -main [& mess]
