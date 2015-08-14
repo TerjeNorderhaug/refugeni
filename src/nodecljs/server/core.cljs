@@ -16,8 +16,10 @@
       (->> (<! jokes-chan)
            (map #(str "<p>" %))
            (string/join "\n")
-           (#(string/join "\n" ["<!DOCTYPE html><main>"
-                                % "</main><script src='/js/app.js'>"]))
+           (#(string/join "\n" ["<!DOCTYPE html>"
+                                "<title>Jokes</title>"
+                                "<main>" %
+                                "</main><script src='/js/app.js'>"]))
            (.send res)))))
 
 (defn server [handler port cb]
