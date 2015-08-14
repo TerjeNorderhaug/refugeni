@@ -12,8 +12,11 @@
 (defn handler [req res]
   (let [jokes-chan (async/into [] (fetch-some-jokes 5))]
     (go
-      (.set res "Content-Type" "text/plain")
-      (.send res (string/join "\n\n" (<! jokes-chan))))))
+      (.set res "Content-Type" "text/html")
+      (->> (<! jokes-chan)
+           (map #(str "<p>" % "</p>" \newline))
+           (string/join)
+           (.send res)))))
 
 (defn server [handler port cb]
   (doto (express)
