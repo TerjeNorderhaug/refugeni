@@ -14,9 +14,9 @@
     (go
       (.set res "Content-Type" "text/html")
       (->> (<! jokes-chan)
-           (map #(str "<p>" % "</p>" \newline))
-           (string/join)
-           (#(str % "\n<script src='/js/app.js'>"))
+           (map #(str "<p>" %))
+           (string/join "\n")
+           (#(string/join "\n" "<!html><main>" % "<script src='/js/app.js'>"))
            (.send res)))))
 
 (defn server [handler port cb]
