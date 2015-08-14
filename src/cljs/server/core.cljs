@@ -16,9 +16,9 @@
       (.send res (string/join "\n\n" (<! jokes-chan))))))
 
 (defn server [handler port cb]
-  (let [app (express)]
-    (.get app "/" handler)
-    (.listen app port cb)))
+  (doto (express)
+    (.get "/" handler)
+    (.listen port cb)))
 
 (defn -main [& mess]
   (let [port (or (.-PORT (.-env js/process)) 1337)]
