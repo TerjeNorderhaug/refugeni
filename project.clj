@@ -23,12 +23,18 @@
 
   :clean-targets [^{:protect false}
                   [:cljsbuild :builds 0 :compiler :output-to]
+                  ^{:protect false}
+                  [:cljsbuild :builds 1 :compiler :output-to]
                   :target-path :compile-path]
 
   :cljsbuild {:builds
-              [{:source-paths ["src/cljs"]
+              [{:source-paths ["src/cljs/server"]
                 :compiler {:target :nodejs
                            :output-to "target/out/server.js"
                            :jar true
+                           :optimizations :simple
+                           :pretty-print true}}
+               {:source-paths ["src/cljs/app"]
+                :compiler {:output-to "resources/public/js/app.js"
                            :optimizations :simple
                            :pretty-print true}}]})
