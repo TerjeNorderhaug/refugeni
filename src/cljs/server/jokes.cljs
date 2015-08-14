@@ -1,6 +1,9 @@
 (ns server.jokes
-  (:require-macros [cljs.core.async.macros :refer [go go-loop]])
-  (:require [cljs.core.async :as async :refer [chan close! put!]]))
+  (:require-macros
+   [cljs.core.async.macros :refer [go go-loop]])
+  (:require
+   [cljs.nodejs :as nodejs]
+   [cljs.core.async :as async :refer [chan close! put!]]))
 
 (def http (nodejs/require "http"))
 
