@@ -16,7 +16,7 @@
       (->> (<! jokes-chan)
            (map #(str "<p>" % "</p>" \newline))
            (string/join)
-           (format "%s\n<script src='//js/app.js'/>")
+           (#(str % "\n<script src='/js/app.js'>"))
            (.send res)))))
 
 (defn server [handler port cb]

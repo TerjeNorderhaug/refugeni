@@ -1,6 +1,6 @@
 # cljsnode
 
-Clojurescript based website using node express on Heroku.
+Clojurescript based SPA using node express on Heroku.
 
 ## Run Locally
 
