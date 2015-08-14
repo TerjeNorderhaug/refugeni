@@ -1,7 +1,7 @@
 (ns server.jokes
   (:require-macros [cljs.core.async.macros :refer [go go-loop]])
   (:require [cljs.nodejs :as nodejs]
-            [cljs.core.async :as async :refer [chan close! timeout put!]]))
+            [cljs.core.async :as async :refer [chan close! put!]]))
 
 (def http (nodejs/require "http"))
 
@@ -13,17 +13,11 @@
           (fn [res]
             (.on res "data" (fn [data]
                               (let [response (js->clj (.parse js/JSON data))]
-                                (put! c (get-in response ["value" "joke"])))))))
+                                (put! c (get-in response ["value" "joke"]))
+                                (close! c))))))
     c))
 
 (defn fetch-some-jokes
-  "Fetch some jokes from The Internet Chuck Norris Database up to given char limit"
-  [max-len]
-  (let [c (chan)]
-    (go-loop [len 0]
-      (if (< len max-len)
-        (let [joke (<! (fetch-some-joke))]
-          (put! c joke)
-          (recur (+ len (count joke))))
-        (close! c)))
-    c))
+  "Fetch some jokes from The Internet Chuck Norris Database"
+  [n]
+  (async/merge (repeatedly n fetch-some-joke)))

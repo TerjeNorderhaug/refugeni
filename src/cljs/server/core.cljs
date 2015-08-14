@@ -10,10 +10,10 @@
 (def express (nodejs/require "express"))
 
 (defn handler [req res]
-  (let [jokes-chan (fetch-some-jokes 500)]
+  (let [jokes-chan (fetch-some-jokes 5)]
     (go-loop [content nil]
       (let [joke (<! jokes-chan)]
-        (if (some? joke)
+        (if (not (nil? joke))
           (recur (cons joke content))
           (do
             (.set res "Content-Type" "text/plain")
