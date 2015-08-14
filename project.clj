@@ -15,7 +15,7 @@
             [lein-cljsbuild "1.0.6"]
             [lein-npm "0.6.1"]]
 
-  :min-lein-version "2.0.0"
+  :min-lein-version "2.1.2"
 
   :hooks [leiningen.cljsbuild]
 
@@ -28,13 +28,13 @@
                   :target-path :compile-path]
 
   :cljsbuild {:builds
-              [{:source-paths ["src/cljs/server"]
+              [{:source-paths ["src/cljsnode"]
                 :compiler {:target :nodejs
                            :output-to "target/out/server.js"
                            :jar true
                            :optimizations :simple
                            :pretty-print true}}
-               {:source-paths ["src/cljs/app"]
+               {:source-paths ["src/cljs"]
                 :compiler {:output-to "resources/public/js/app.js"
                            :optimizations :simple
                            :pretty-print true}}]})
