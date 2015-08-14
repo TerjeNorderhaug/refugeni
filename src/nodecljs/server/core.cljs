@@ -18,8 +18,8 @@
            (string/join "\n")
            (#(string/join "\n" ["<!DOCTYPE html>"
                                 "<title>Jokes</title>"
-                                "<main>" %
-                                "</main><script src='/js/app.js'>"]))
+                                "<main>" % "</main>"
+                                "<script src='/js/app.js'></script>"]))
            (.send res)))))
 
 (defn server [handler port cb]
