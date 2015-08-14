@@ -10,14 +10,10 @@
 (def express (nodejs/require "express"))
 
 (defn handler [req res]
-  (let [jokes-chan (fetch-some-jokes 5)]
-    (go-loop [content nil]
-      (let [joke (<! jokes-chan)]
-        (if (not (nil? joke))
-          (recur (cons joke content))
-          (do
-            (.set res "Content-Type" "text/plain")
-            (.send res (string/join "\n\n" content))))))))
+  (let [jokes-chan (async/into [] (fetch-some-jokes 5))]
+    (go
+      (.set res "Content-Type" "text/plain")
+      (.send res (string/join "\n\n" (<! jokes-chan))))))
 
 (defn server [handler port cb]
   (let [app (express)]
