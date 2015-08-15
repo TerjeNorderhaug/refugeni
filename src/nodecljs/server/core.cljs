@@ -19,8 +19,8 @@
                             "<script src='/js/app.js'></script>"])) ))
 
 (defn handler [req res]
-  (if (= "https" (aget (.headers req) "x-forwarded-proto"))
-    (.redirect res (str "'http://" (.get req "Host") (.url req)))
+  (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
+    (.redirect res (str "http://" (.get req "Host") (.-url req)))
     (let [jokes-chan (async/into [] (fetch-some-jokes 5))]
       (go
         (.set res "Content-Type" "text/html")
