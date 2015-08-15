@@ -9,18 +9,20 @@
 
 (def express (nodejs/require "express"))
 
+(defn render-page [lines]
+  (->> lines
+       (map #(str "<p>" %))
+       (string/join "\n")
+       (#(string/join "\n" ["<!DOCTYPE html>"
+                            "<title>Jokes</title>"
+                            "<main id='jokes'>" % "</main>"
+                            "<script src='/js/app.js'></script>"])) ))
+
 (defn handler [req res]
   (let [jokes-chan (async/into [] (fetch-some-jokes 5))]
     (go
       (.set res "Content-Type" "text/html")
-      (->> (<! jokes-chan)
-           (map #(str "<p>" %))
-           (string/join "\n")
-           (#(string/join "\n" ["<!DOCTYPE html>"
-                                "<title>Jokes</title>"
-                                "<main>" % "</main>"
-                                "<script src='/js/app.js'></script>"]))
-           (.send res)))))
+      (.send res (render-page (<! jokes-chan))))))
 
 (defn server [handler port cb]
   (doto (express)
