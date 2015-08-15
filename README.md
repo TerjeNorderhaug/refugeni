@@ -9,7 +9,8 @@ To start a server on your own computer:
     lein do deps, compile
     lein npm start
 
-Point your browser to the displayed local port..
+Point your browser to the displayed local port.
+Click on the displayed text to refresh.
 
 ## Deploy to Heroku
 
