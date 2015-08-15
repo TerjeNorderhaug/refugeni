@@ -22,19 +22,29 @@
   :main "out/server.js"
 
   :clean-targets [^{:protect false}
-                  [:cljsbuild :builds 0 :compiler :output-to]
+                  [:cljsbuild :builds :server :compiler :output-to]
                   ^{:protect false}
-                  [:cljsbuild :builds 1 :compiler :output-to]
+                  [:cljsbuild :builds :app :compiler :output-to]
                   :target-path :compile-path]
 
   :cljsbuild {:builds
-              [{:source-paths ["src/nodecljs"]
+              {:server
+               {:source-paths ["src/nodecljs"]
                 :compiler {:target :nodejs
                            :output-to "target/out/server.js"
                            :jar true
                            :optimizations :simple
                            :pretty-print true}}
+               :app
                {:source-paths ["src/cljs"]
                 :compiler {:output-to "resources/public/js/app.js"
                            :optimizations :simple
-                           :pretty-print true}}]})
+                           :pretty-print true}}}}
+
+  :profiles {:production
+             {:env {:production true}
+              :cljsbuild
+              {:builds
+               {:app
+                {:compiler {:optimizations :advanced
+                            :pretty-print false}}}}}})
