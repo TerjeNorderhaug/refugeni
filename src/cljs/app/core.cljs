@@ -11,7 +11,7 @@
 (enable-console-print!)
 
 (defn fetch-joke-async [cb]
-  (let [req (Jsonp. (Uri. "://api.icndb.com/jokes/random"))]
+  (let [req (Jsonp. (Uri. "https://api.icndb.com/jokes/random"))]
     (.send req nil
            (fn [res]
              (cb (get-in (js->clj res) ["value" "joke"]))))))
