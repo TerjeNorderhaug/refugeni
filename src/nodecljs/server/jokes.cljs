@@ -1,27 +1,18 @@
 (ns server.jokes
-  (:require-macros
-   [cljs.core.async.macros :refer [go go-loop]])
   (:require
-   [cljs.nodejs :as nodejs]
-   [cljs.core.async :as async :refer [chan close! put!]]))
-
-(def http (nodejs/require "http"))
-
-(defn fetch-joke-async [cb]
-  (.get http "http://api.icndb.com/jokes/random"
-        (fn [res]
-          (.on res "data" (fn [data]
-                            (let [response (js->clj (.parse js/JSON data))]
-                              (cb (get-in response ["value" "joke"]))))))))
+   [cljs.core.async :as async :refer [chan close! put!]]
+   [server.json :refer [fetch-json]]))
 
 (defn fetch-some-joke
   "Fetch joke from The Internet Chuck Norris Database"
   []
   (let [c (chan)]
-    (fetch-joke-async
-     #(do
-        (put! c %)
-        (close! c)))
+    (fetch-json
+     "http://api.icndb.com/jokes/random"
+     (fn [response]
+       (let [value (get-in response ["value" "joke"])]
+         (put! c value)
+         (close! c))))
     c))
 
 (defn fetch-some-jokes

@@ -1,30 +1,24 @@
 (ns app.core
   (:require-macros [cljs.core.async.macros :refer [go go-loop alt!]])
   (:require
+   [app.json :refer [fetch-json]]
    [cljs.core.async :as async :refer [chan close! timeout put!]]
    [clojure.string :as string]
    [goog.dom :as dom]
-   [goog.events :as events])
-  (:import [goog.net Jsonp]
-           [goog Uri]))
+   [goog.events :as events]))
 
 (enable-console-print!)
-
-(defn fetch-joke-async [cb]
-  (let [req (Jsonp. (Uri. "//api.icndb.com/jokes/random"))]
-    (.send req nil
-           (fn [res]
-             (cb (get-in (js->clj res) ["value" "joke"]))))))
 
 (defn fetch-some-joke
   "Fetch joke from The Internet Chuck Norris Database"
   []
   (let [c (chan)]
-    (fetch-joke-async
-     #(do
-        (put! c %)
-        (println "Joke:" %)
-        (close! c)))
+    (fetch-json "http://api.icndb.com/jokes/random"
+                (fn [response]
+                  (let [value (get-in response ["value" "joke"])]
+                    (put! c value)
+                    (println "Joke:" value)
+                    (close! c))))
     c))
 
 (defn fetch-some-jokes [n]
@@ -34,7 +28,6 @@
   (->> lines
        (map #(str "<p>" %))
        (string/join "\n")))
-
 
 (defn init []
   (let [el (dom/getElement "jokes")
