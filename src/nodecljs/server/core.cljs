@@ -19,16 +19,16 @@
                             "<main id='jokes'>" % "</main>"
                             "<script src='/js/app.js'></script>"])) ))
 
-(defn jokes-handler [jokes req res]
+(defn jokes-handler [req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
     (.redirect res (str "http://" (.get req "Host") (.-url req)))
     (go
       (.set res "Content-Type" "text/html")
-      (.send res (render-page (<! jokes))))))
+      (.send res (render-page (<! (fresh-jokes 5)))))))
 
 (defn server [handler port success]
   (doto (express)
-    (.get "/" (partial jokes-handler (fresh-jokes 5)))
+    (.get "/" jokes-handler)
     (.use (.static express "../resources/public"))
     (.listen port success)))
 
