@@ -9,6 +9,7 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]]
 
   :npm {:dependencies [[express "4.13.3"]
+                       [xmlhttprequest "*"]
                        [source-map-support "*"]]
         :root :target-path}
 

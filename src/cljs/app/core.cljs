@@ -6,23 +6,7 @@
    [clojure.string :as string]
    [goog.dom :as dom]
    [goog.events :as events]
-   [app.json :refer [fetch-json]]
-   [shared.lib :as lib]))
-
-(defn fresh-jokes
-  "Channel buffering collections of n jokes from The Internet Chuck Norris Database"
-  ([n buf & {:keys [concur] :or {concur n}}]
-   (let [out (chan buf (comp
-                        (map #(get-in % ["value" "joke"]))
-                        (partition-all n)))]
-     (async/pipeline-async concur out
-                           #(fetch-json %1 (fn [v](put! %2 v (partial close! %2))))
-                                        ; http://dev.clojure.org/jira/browse/ASYNC-108
-                                        ; (async/to-chan (repeat "http://api.icndb.com/jokes/random"))
-                           (let [ch (chan n)]
-                             (async/onto-chan ch (repeat "http://api.icndb.com/jokes/random"))
-                             ch))
-     out)))
+   [shared.jokes :refer [fresh-jokes]]))
 
 (defn render [lines]
   (->> lines
