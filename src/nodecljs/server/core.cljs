@@ -3,11 +3,22 @@
   (:require [cljs.nodejs :as nodejs]
             [cljs.core.async :as async :refer [chan close! timeout put! map<]]
             [clojure.string :as string]
-            [server.jokes :refer [fetch-some-jokes]]))
+            [server.json :refer [fetch-json]]))
 
 (enable-console-print!)
 
 (def express (nodejs/require "express"))
+
+(defn fetch-jokes
+  "Fetch a single collection of jokes from The Internet Chuck Norris Database"
+  [n]
+  (let [out (chan 1 (comp (map #(get-in % ["value" "joke"]))
+                          (partition-all n)))]
+    (async/pipeline-async n out
+                          #(fetch-json %1 (fn [v](put! %2 v (partial close! %2))))
+                          (async/to-chan
+                           (repeat n "http://api.icndb.com/jokes/random")))
+    out))
 
 (defn render-page [lines]
   (->> lines
@@ -21,10 +32,9 @@
 (defn handler [req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
     (.redirect res (str "http://" (.get req "Host") (.-url req)))
-    (let [jokes-chan (async/into [] (fetch-some-jokes 5))]
-      (go
-        (.set res "Content-Type" "text/html")
-        (.send res (render-page (<! jokes-chan)))))))
+    (go
+      (.set res "Content-Type" "text/html")
+      (.send res (render-page (<! (fetch-jokes 5)))))))
 
 (defn server [handler port cb]
   (doto (express)

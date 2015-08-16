@@ -1,44 +1,44 @@
 (ns app.core
-  (:require-macros [cljs.core.async.macros :refer [go go-loop alt!]])
+  (:require-macros
+   [cljs.core.async.macros :refer [go go-loop]])
   (:require
-   [app.json :refer [fetch-json]]
    [cljs.core.async :as async :refer [chan close! timeout put!]]
    [clojure.string :as string]
    [goog.dom :as dom]
-   [goog.events :as events]))
+   [goog.events :as events]
+   [app.json :refer [fetch-json]]
+   [shared.lib :as lib]))
 
-(enable-console-print!)
+(defn fresh-jokes
+  "Channel buffering collections of n jokes from The Internet Chuck Norris Database"
+  ([n buf & {:keys [concur] :or {concur n}}]
+   (let [out (chan buf (comp
+                        (map #(get-in % ["value" "joke"]))
+                        (partition-all n)))]
+     (async/pipeline-async concur out
+                           #(fetch-json %1 (fn [v](put! %2 v (partial close! %2))))
+                                        ; http://dev.clojure.org/jira/browse/ASYNC-108
+                                        ; (async/to-chan (repeat "http://api.icndb.com/jokes/random"))
+                           (let [ch (chan n)]
+                             (async/onto-chan ch (repeat "http://api.icndb.com/jokes/random"))
+                             ch))
+     out)))
 
-(defn fetch-some-joke
-  "Fetch joke from The Internet Chuck Norris Database"
-  []
-  (let [c (chan)]
-    (fetch-json "http://api.icndb.com/jokes/random"
-                (fn [response]
-                  (let [value (get-in response ["value" "joke"])]
-                    (put! c value)
-                    (println "Joke:" value)
-                    (close! c))))
-    c))
-
-(defn fetch-some-jokes [n]
-  (async/merge (repeatedly n fetch-some-joke)))
-
-(defn render-jokes [lines]
+(defn render [lines]
   (->> lines
        (map #(str "<p>" %))
        (string/join "\n")))
 
-(defn init []
+(defn init! []
   (let [el (dom/getElement "jokes")
-        refresh-chan (chan)]
+        jokes-buf (fresh-jokes 5 3 :concur 15)
+        user-action (chan)]
     (events/listen el events/EventType.CLICK
-                   (partial put! refresh-chan))
-    (go-loop []
-      (let [jokes-chan (async/into [] (fetch-some-jokes 5))
-            [_ results] (<! (async/map vector [(async/take 1 refresh-chan) jokes-chan]))]
-        (set! (.-innerHTML el)
-              (render-jokes results))
-        (recur)))))
+                   (partial put! user-action))
+    (go
+      (while (some? (<! user-action))
+        (let [jokes (<! jokes-buf)]
+          (set! (.-innerHTML el)
+                (render jokes)))))))
 
-(init)
+(init!)
