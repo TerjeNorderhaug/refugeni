@@ -1,11 +1,6 @@
 (ns shared.json
-  (:import
-   [goog.net XhrIo]
-   [goog Uri]))
+  (:require
+   [goog.net.XhrIo :as xhr]))
 
 (defn fetch-json [uri cb]
-  (.send XhrIo (Uri. uri)
-         (fn [e]
-           (let [xhr (.-target e)
-                 res (.getResponseJson xhr)]
-             (cb (js->clj res))))))
+  (xhr/send uri (fn [e] (-> e .-target .getResponseJson js->clj cb))))
