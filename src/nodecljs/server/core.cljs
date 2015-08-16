@@ -19,7 +19,7 @@
                             "<main id='jokes'>" % "</main>"
                             "<script src='/js/app.js'></script>"])) ))
 
-(defn jokes-handler [req res]
+(defn handler [req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
     (.redirect res (str "http://" (.get req "Host") (.-url req)))
     (go
