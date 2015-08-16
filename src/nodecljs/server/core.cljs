@@ -28,7 +28,7 @@
 
 (defn server [handler port success]
   (doto (express)
-    (.get "/" jokes-handler)
+    (.get "/" handler)
     (.use (.static express "../resources/public"))
     (.listen port success)))
 
