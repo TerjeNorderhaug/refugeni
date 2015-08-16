@@ -50,5 +50,5 @@
               :cljsbuild
               {:builds
                {:app
-                {:compiler {:optimizations :advanced
+                {:compiler {:optimizations :simple
                             :pretty-print false}}}}}})
