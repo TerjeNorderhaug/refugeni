@@ -7,12 +7,8 @@
    [goog.dom :as dom]
    [goog.events :as events]
    [reagent.core :as reagent :refer [atom]]
-   [shared.jokes :refer [fresh-jokes]]))
-
-(defn jokes-view [jokes]
-  [:div (for [content @jokes]
-          ^{:key content}
-          [:p content])])
+   [shared.jokes :refer [fresh-jokes]]
+   [shared.views :refer [jokes-view]]))
 
 (defn init! []
   (let [el (dom/getElement "jokes")
@@ -24,7 +20,7 @@
     (go
       (while (some? (<! user-action))
         (when-not @jokes
-          (reagent/render [jokes-view jokes] el))
+          (reagent/render [#(jokes-view @jokes)] el))
         (reset! jokes (<! jokes-buf))))))
 
 (init!)

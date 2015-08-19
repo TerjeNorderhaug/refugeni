@@ -4,16 +4,17 @@
             [cljs.core.async :as async :refer [chan close! timeout put!]]
             [clojure.string :as string]
             [shared.jokes :as jokes :refer [fresh-jokes]]
-            [server.compat]))
+            [server.compat]
+            [shared.views :refer [jokes-view]]
+            [reagent.core :as reagent :refer [atom]]))
 
 (enable-console-print!)
 
 (def express (nodejs/require "express"))
 
 (defn render-page [lines]
-  (->> lines
-       (map #(str "<p>" %))
-       (string/join "\n")
+  (->> (jokes-view lines)
+       (reagent/render-to-static-markup)
        (#(string/join "\n" ["<!DOCTYPE html>"
                             "<title>Jokes</title>"
                             "<main id='jokes'>" % "</main>"

@@ -11,7 +11,8 @@
 
   :npm {:dependencies [[express "4.13.3"]
                        [xmlhttprequest "*"]
-                       [source-map-support "*"]]
+                       [source-map-support "*"]
+                       [react "*"]]
         :root :target-path}
 
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
