@@ -11,18 +11,19 @@
 
 (def express (nodejs/require "express"))
 
-(defn handler [req res]
+(defn handler [jokes-chan req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
     (.redirect res (str "http://" (.get req "Host") (.-url req)))
     (go
       (.set res "Content-Type" "text/html")
-      (.send res (html5 (jokes-page (<! (fresh-jokes 5))))))))
+      (.send res (html5 (jokes-page (<! jokes-chan)))))))
 
 (defn server [handler port success]
-  (doto (express)
-    (.get "/" handler)
-    (.use (.static express "../resources/public"))
-    (.listen port success)))
+  (let [jokes (fresh-jokes 5 2)]
+    (doto (express)
+      (.get "/" #(handler jokes %1 %2))
+      (.use (.static express "../resources/public"))
+      (.listen port success))))
 
 (defn -main [& mess]
   (let [port (or (.-PORT (.-env js/process)) 1337)]
