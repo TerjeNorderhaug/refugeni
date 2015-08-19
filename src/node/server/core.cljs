@@ -2,27 +2,21 @@
   (:require-macros [cljs.core.async.macros :as m :refer [go go-loop alt!]])
   (:require [cljs.nodejs :as nodejs]
             [cljs.core.async :as async :refer [chan close! timeout put!]]
-            [clojure.string :as string]
             [shared.jokes :as jokes :refer [fresh-jokes]]
             [server.compat]
-            [shared.views :refer [jokes-page]]
+            [shared.views :refer [html5 jokes-page]]
             [reagent.core :as reagent :refer [atom]]))
 
 (enable-console-print!)
 
 (def express (nodejs/require "express"))
 
-(defn render-page [lines]
-  (->> (jokes-page lines)
-       (reagent/render-to-static-markup)
-       (#(string/join "\n" ["<!DOCTYPE html>" %]))))
-
 (defn handler [req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
     (.redirect res (str "http://" (.get req "Host") (.-url req)))
     (go
       (.set res "Content-Type" "text/html")
-      (.send res (render-page (<! (fresh-jokes 5)))))))
+      (.send res (html5 (jokes-page (<! (fresh-jokes 5))))))))
 
 (defn server [handler port success]
   (doto (express)
