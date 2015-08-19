@@ -38,6 +38,7 @@
                {:source-paths ["src/nodecljs"]
                 :compiler {:target :nodejs
                            :output-to "target/out/server.js"
+                           :output-dir "target/out"
                            :jar true
                            :optimizations :simple
                            :pretty-print true}}
@@ -47,7 +48,7 @@
                            :optimizations :simple
                            :pretty-print true}}}}
 
-  :profiles {:production
+  :profiles {:prod
              {:env {:production true}
               :cljsbuild
               {:builds
