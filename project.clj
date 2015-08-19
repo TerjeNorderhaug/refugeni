@@ -35,7 +35,7 @@
 
   :cljsbuild {:builds
               {:server
-               {:source-paths ["src/nodecljs"]
+               {:source-paths ["src/node"]
                 :compiler {:target :nodejs
                            :output-to "target/out/server.js"
                            :jar true
