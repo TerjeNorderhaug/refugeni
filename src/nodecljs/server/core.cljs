@@ -5,7 +5,7 @@
             [clojure.string :as string]
             [shared.jokes :as jokes :refer [fresh-jokes]]
             [server.compat]
-            [shared.views :refer [jokes-view]]
+            [shared.views :refer [jokes-page]]
             [reagent.core :as reagent :refer [atom]]))
 
 (enable-console-print!)
@@ -13,12 +13,9 @@
 (def express (nodejs/require "express"))
 
 (defn render-page [lines]
-  (->> (jokes-view lines)
+  (->> (jokes-page lines)
        (reagent/render-to-static-markup)
-       (#(string/join "\n" ["<!DOCTYPE html>"
-                            "<title>Jokes</title>"
-                            "<main id='jokes'>" % "</main>"
-                            "<script src='/js/app.js'></script>"])) ))
+       (#(string/join "\n" ["<!DOCTYPE html>" %]))))
 
 (defn handler [req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
