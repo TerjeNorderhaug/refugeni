@@ -22,6 +22,10 @@
   (let [jokes (fresh-jokes 5 2)]
     (doto (express)
       (.get "/" #(handler jokes %1 %2))
+      (.get "/js/app.js"
+            (fn [req res]
+              (.sendFile res "app.js"
+                         (clj->js {:root "../resources/public/js"}))))
       (.use (.static express "../resources/public"))
       (.listen port success))))
 
