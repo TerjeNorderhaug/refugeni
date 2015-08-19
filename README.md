@@ -22,6 +22,9 @@ To start a server on Heroku:
 
 This will open the site in your browser.
 
+Alternatively check out at:
+https://cljsnode.herokuapp.com
+
 ## License
 
 Copyright © 2015 Terje Norderhaug
