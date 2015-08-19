@@ -38,7 +38,6 @@
                {:source-paths ["src/nodecljs"]
                 :compiler {:target :nodejs
                            :output-to "target/out/server.js"
-                           :output-dir "target/out"
                            :jar true
                            :optimizations :simple
                            :pretty-print true}}
