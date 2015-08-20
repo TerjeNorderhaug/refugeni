@@ -42,23 +42,20 @@
                            :pretty-print true}}
                :app
                {:source-paths ["src/cljs"]
-                :compiler {:output-to  "resources/public/js/out/app.js"
-                           :output-dir "resources/public/js/out/lib" ; tmp
+                :compiler {:output-to "resources/public/js/out/app.js"
+                           :output-dir "resources/public/js/out/lib"
+                           :asset-path "js/out/lib"
+                           :main app.core
                            :optimizations :none
-                           :pretty-print true
-                           }}}}
+                           :pretty-print true}}}}
 
   :profiles {:dev
-             {:cljsbuild
-              {:builds
-               {:app
-                {:compiler {:output-dir "resources/public/js/out/lib"}}}}}
+             {}
              :prod
              {:env {:production true}
               :cljsbuild
               {:builds
                {:app
-                {:compiler {:output-to "resources/public/js/out/app.js"
-                            :output-dir "target/out/prod"
+                {:compiler {:output-dir "target/out/prod"
                             :optimizations :advanced
                             :pretty-print false}}}}}})

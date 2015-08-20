@@ -11,9 +11,7 @@
 
 (def express (nodejs/require "express"))
 
-(def scripts ["/js/out/lib/goog/base.js"
-              "/js/out/app.js"
-              "/js/start.js"])
+(def scripts ["/js/out/app.js"])
 
 (defn handler [jokes-chan req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
