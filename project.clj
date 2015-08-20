@@ -42,9 +42,10 @@
                            :pretty-print true}}
                :app
                {:source-paths ["src/cljs"]
-                :compiler {:output-to "resources/public/js/app.js"
-                           :optimizations :simple
-                           :pretty-print true}}}}
+                :compiler {; :output-to "resources/public/js/app.js"
+                           ; :optimizations :simple
+                           ; :pretty-print true
+                           }}}}
 
   :profiles {:prod
              {:env {:production true}

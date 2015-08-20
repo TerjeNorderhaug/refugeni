@@ -22,10 +22,12 @@
   (let [jokes (fresh-jokes 5 2)]
     (doto (express)
       (.get "/" #(handler jokes %1 %2))
-      (.get "/js/app.js"
+      (.get "/js/out/app.js"
             (fn [req res]
-              (.sendFile res "app.js"
-                         (clj->js {:root "../resources/public/js"}))))
+              (.sendFile res "cljsbuild-main.js"
+                         (clj->js {:root "../target"}))))
+      (.use "/js/out/" ;; restrict to js? and devmode only!
+            (.static express "../target/cljsbuild-compiler-1/goog"))
       (.use (.static express "../resources/public"))
       (.listen port success))))
 
