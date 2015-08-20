@@ -25,6 +25,19 @@ This will open the site in your browser.
 Alternatively check out at:
 https://cljsnode.herokuapp.com
 
+## Development Workflow
+
+Start figwheel in a separate terminal for interactive development:
+
+    lein figwheel
+
+Start a server in another terminal:
+
+    lein npm start
+
+Open the displayed URL in a browser. Figwheel will open a REPL connected to the
+app in the browser.
+
 ## License
 
 Copyright © 2015 Terje Norderhaug

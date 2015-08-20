@@ -17,7 +17,8 @@
 
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
             [lein-cljsbuild "1.0.6"]
-            [lein-npm "0.6.1"]]
+            [lein-npm "0.6.1"]
+            [lein-figwheel "0.3.7"]]
 
   :min-lein-version "2.1.2"
 
@@ -48,11 +49,14 @@
                            :output-dir "resources/public/js/out/lib"
                            :asset-path "js/out/lib"
                            :main app.core
-                           :optimizations :none
-                           :pretty-print true}}}}
+                           :optimizations :none}}}}
 
   :profiles {:dev
-             {}
+             {:cljsbuild
+              {:builds
+               {:app
+                {:compiler {:pretty-print true}
+                 :figwheel true}}}}
              :prod
              {:env {:production true}
               :cljsbuild
