@@ -17,4 +17,5 @@
    [:main {:id "jokes"}
     [jokes-view lines]]
    (for [ref scripts]
+     ^{:key ref}
      [:script {:src ref}]) ])

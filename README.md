@@ -36,7 +36,7 @@ Start a server in another terminal:
     lein npm start
 
 Open the displayed URL in a browser. Figwheel will open a REPL connected to the
-app in the browser.
+app in the browser, and automatically push code changes to the app.
 
 ## License
 
