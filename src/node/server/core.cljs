@@ -11,23 +11,29 @@
 
 (def express (nodejs/require "express"))
 
+(def scripts ["/js/out/lib/goog/base.js"
+              "/js/out/app.js"
+              "/js/start.js"])
+
 (defn handler [jokes-chan req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
     (.redirect res (str "http://" (.get req "Host") (.-url req)))
     (go
       (.set res "Content-Type" "text/html")
-      (.send res (html5 (jokes-page (<! jokes-chan)))))))
+      (.send res (-> (<! jokes-chan)
+                     (jokes-page :scripts scripts)
+                     (html5))))))
 
 (defn server [handler port success]
   (let [jokes (fresh-jokes 5 2)]
     (doto (express)
       (.get "/" #(handler jokes %1 %2))
-      (.get "/js/out/app.js"
-            (fn [req res]
-              (.sendFile res "cljsbuild-main.js"
-                         (clj->js {:root "../target"}))))
-      (.use "/js/out/" ;; restrict to js? and devmode only!
-            (.static express "../target/cljsbuild-compiler-1/goog"))
+      ;(.get app-path
+      ;      (fn [req res]
+      ;        (.sendFile res "cljsbuild-main.js"
+      ;                   (clj->js {:root "../target"}))))
+      ;(.use "/js/out/" ;; restrict to js? and devmode only!
+      ;      (.static express "../target/cljsbuild-compiler-1/goog"))
       (.use (.static express "../resources/public"))
       (.listen port success))))
 

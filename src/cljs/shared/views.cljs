@@ -11,9 +11,10 @@
           ^{:key content}
           [:p content])])
 
-(defn jokes-page [lines]
+(defn jokes-page [lines & {:keys [scripts]}]
   [:html
    [:title "Jokes"]
    [:main {:id "jokes"}
     [jokes-view lines]]
-   [:script {:src "/js/app.js"}]])
+   (for [ref scripts]
+     [:script {:src ref}]) ])
