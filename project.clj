@@ -23,6 +23,8 @@
 
   :hooks [leiningen.cljsbuild]
 
+  :aliases {"start" ["npm" "start"]}
+
   :main "out/server.js"
 
   :source-paths ["src/cljs/shared"]
