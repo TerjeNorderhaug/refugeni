@@ -30,10 +30,13 @@
 
   :source-paths ["src/cljs/shared"]
 
-  :clean-targets ^{:protect false}
-                 [[:cljsbuild :builds :server :compiler :output-to]
-                  [:cljsbuild :builds :app :compiler :output-to]
-                  :target-path :compile-path]
+  :clean-targets ^{:protect false} [[:cljsbuild :builds :server :compiler :output-to]
+                                    [:cljsbuild :builds :app :compiler :output-to]
+                                    :target-path :compile-path]
+
+  :figwheel {:server-logfile "logs/figwheel.log"
+             :http-server-root "public"
+             :css-dirs ["resources/public/css"]}
 
   :cljsbuild {:builds
               {:server
@@ -45,6 +48,7 @@
                            :main server.core
                            :optimizations :none}
                 :notify-command ["bin/dependency-patch.sh"]}
+
                :app
                {:source-paths ["src/cljs"]
                 :compiler {:output-to "resources/public/js/out/app.js"
@@ -57,10 +61,13 @@
              {:cljsbuild
               {:builds
                {:server
-                {:compiler {:pretty-print true}}
+                {:compiler {:pretty-print true}
+                 :figwheel {:heads-up-display false}}
                 :app
                 {:compiler {:pretty-print true}
-                 :figwheel true}}}}
+                 :figwheel true}}}
+              :npm {:dependencies [[ws "*"]]}}
+
              :prod
              {:env {:production true}
               :cljsbuild

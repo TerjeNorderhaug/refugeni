@@ -27,17 +27,19 @@ https://cljsnode.herokuapp.com
 
 ## Development Workflow
 
-Start figwheel in a separate terminal for interactive development with
+Start figwheel for interactive development with
 automatic builds and code loading:
 
-    lein figwheel
+    lein figwheel app server
 
-Start a server in another terminal:
+Wait until Figwheel is ready to connect, then
+start a server in another terminal:
 
+    bin/inject-figwheel.sh
     lein npm start
 
 Open the displayed URL in a browser.
-Figwheel will start pushing code changes to the app.
+Figwheel will push code changes to the app and server.
 
 ## License
 
