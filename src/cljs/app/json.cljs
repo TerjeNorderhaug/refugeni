@@ -1,4 +1,4 @@
-(ns shared.json
+(ns app.json
   (:require
    [goog.net.XhrIo :as xhr]))
 

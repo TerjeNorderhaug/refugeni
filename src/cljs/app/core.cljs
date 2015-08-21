@@ -7,8 +7,8 @@
    [goog.dom :as dom]
    [goog.events :as events]
    [reagent.core :as reagent :refer [atom]]
-   [shared.jokes :refer [fresh-jokes]]
-   [shared.views :refer [jokes-view]]))
+   [app.jokes :refer [fresh-jokes]]
+   [app.views :refer [jokes-view]]))
 
 (defn ^:export main []
   (let [el (dom/getElement "jokes")

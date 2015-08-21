@@ -28,7 +28,7 @@
 
   :main "server/main.js"
 
-  :source-paths ["src/cljs/shared"]
+  :source-paths ["src/cljs/app"]
 
   :clean-targets ^{:protect false} [[:cljsbuild :builds :server :compiler :output-to]
                                     [:cljsbuild :builds :app :compiler :output-to]

@@ -2,9 +2,9 @@
   (:require-macros [cljs.core.async.macros :as m :refer [go go-loop alt!]])
   (:require [cljs.nodejs :as nodejs]
             [cljs.core.async :as async :refer [chan close! timeout put!]]
-            [shared.jokes :as jokes :refer [fresh-jokes]]
+            [app.jokes :as jokes :refer [fresh-jokes]]
             [server.compat]
-            [shared.views :refer [html5 jokes-page]]
+            [app.views :refer [html5 jokes-page]]
             [reagent.core :as reagent :refer [atom]]))
 
 (enable-console-print!)

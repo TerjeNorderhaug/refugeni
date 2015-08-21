@@ -1,9 +1,9 @@
-(ns shared.jokes
+(ns app.jokes
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop alt!]])
   (:require
    [cljs.core.async :as async :refer [chan close! timeout put!]]
-   [shared.json :as json :refer [fetch-json]]))
+   [app.json :as json :refer [fetch-json]]))
 
 (defn fresh-jokes
   "Channel buffering collections of n jokes from The Internet Chuck Norris Database"

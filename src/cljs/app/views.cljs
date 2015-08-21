@@ -1,4 +1,4 @@
-(ns shared.views
+(ns app.views
   (:require
    [reagent.core :as reagent :refer [atom]]))
 
