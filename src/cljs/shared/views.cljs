@@ -16,6 +16,6 @@
    [:title "Jokes"]
    [:main {:id "jokes"}
     [jokes-view lines]]
-   (for [ref scripts]
-     ^{:key ref}
-     [:script {:src ref}]) ])
+   (for [src scripts]
+     ^{:key src}
+     [:script src]) ])

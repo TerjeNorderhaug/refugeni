@@ -10,7 +10,7 @@
    [shared.jokes :refer [fresh-jokes]]
    [shared.views :refer [jokes-view]]))
 
-(defn init! []
+(defn ^:export init []
   (let [el (dom/getElement "jokes")
         jokes-buf (fresh-jokes 5 3 :concur 15)
         jokes (atom nil)
@@ -22,5 +22,3 @@
         (when-not @jokes
           (reagent/render [#(jokes-view @jokes)] el))
         (reset! jokes (<! jokes-buf))))))
-
-(init!)

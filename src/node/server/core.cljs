@@ -11,7 +11,8 @@
 
 (def express (nodejs/require "express"))
 
-(def scripts ["/js/out/app.js"])
+(def scripts [{:src "/js/out/app.js"}
+              "app.core.init()"])
 
 (defn handler [jokes-chan req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
@@ -30,8 +31,6 @@
       ;      (fn [req res]
       ;        (.sendFile res "cljsbuild-main.js"
       ;                   (clj->js {:root "../target"}))))
-      ;(.use "/js/out/" ;; restrict to js? and devmode only!
-      ;      (.static express "../target/cljsbuild-compiler-1/goog"))
       (.use (.static express "../resources/public"))
       (.listen port success))))
 
