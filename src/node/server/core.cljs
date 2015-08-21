@@ -12,7 +12,7 @@
 (def express (nodejs/require "express"))
 
 (def scripts [{:src "/js/out/app.js"}
-              "app.core.init()"])
+              "main_cljs_fn()"])
 
 (defn handler [jokes-chan req res]
   (if (= "https" (aget (.-headers req) "x-forwarded-proto"))
@@ -27,10 +27,6 @@
   (let [jokes (fresh-jokes 5 2)]
     (doto (express)
       (.get "/" #(handler jokes %1 %2))
-      ;(.get app-path
-      ;      (fn [req res]
-      ;        (.sendFile res "cljsbuild-main.js"
-      ;                   (clj->js {:root "../target"}))))
       (.use (.static express "../resources/public"))
       (.listen port success))))
 
