@@ -27,7 +27,8 @@ https://cljsnode.herokuapp.com
 
 ## Development Workflow
 
-Start figwheel in a separate terminal for interactive development:
+Start figwheel in a separate terminal for interactive development with
+automatic builds and code loading:
 
     lein figwheel
 
@@ -35,8 +36,8 @@ Start a server in another terminal:
 
     lein npm start
 
-Open the displayed URL in a browser. Figwheel will open a REPL connected to the
-app in the browser, and automatically push code changes to the app.
+Open the displayed URL in a browser.
+Figwheel will start pushing code changes to the app.
 
 ## License
 

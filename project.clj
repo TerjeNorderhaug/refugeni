@@ -26,7 +26,7 @@
 
   :aliases {"start" ["npm" "start"]}
 
-  :main "out/server.js"
+  :main "server/main.js"
 
   :source-paths ["src/cljs/shared"]
 
@@ -39,10 +39,12 @@
               {:server
                {:source-paths ["src/node"]
                 :compiler {:target :nodejs
-                           :output-to "target/out/server.js"
-                           :jar true
-                           :optimizations :simple
-                           :pretty-print true}}
+                           :output-to "target/server/main.js"
+                           :output-dir "target/server/lib"
+                           :asset-path "server/lib"
+                           :main server.core
+                           :optimizations :none}
+                :notify-command ["bin/dependency-patch.sh"]}
                :app
                {:source-paths ["src/cljs"]
                 :compiler {:output-to "resources/public/js/out/app.js"
@@ -54,14 +56,19 @@
   :profiles {:dev
              {:cljsbuild
               {:builds
-               {:app
+               {:server
+                {:compiler {:pretty-print true}}
+                :app
                 {:compiler {:pretty-print true}
                  :figwheel true}}}}
              :prod
              {:env {:production true}
               :cljsbuild
               {:builds
-               {:app
-                {:compiler {:output-dir "target/out/prod"
+               {:server
+                {:compiler {:optimizations :simple
+                            :pretty-print false}}
+                :app
+                {:compiler {:output-dir "target/app/out"
                             :optimizations :advanced
                             :pretty-print false}}}}}})
