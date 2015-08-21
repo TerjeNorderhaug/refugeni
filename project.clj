@@ -18,7 +18,7 @@
   :plugins [[org.bodil/lein-noderepl "0.1.11"]
             [lein-cljsbuild "1.0.6"]
             [lein-npm "0.6.1"]
-            [lein-figwheel "0.3.7"]]
+            [lein-figwheel "0.3.8-SNAPSHOT"]]
 
   :min-lein-version "2.1.2"
 

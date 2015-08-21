@@ -35,7 +35,6 @@ automatic builds and code loading:
 Wait until Figwheel is ready to connect, then
 start a server in another terminal:
 
-    bin/inject-figwheel.sh
     lein npm start
 
 Open the displayed URL in a browser.
