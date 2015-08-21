@@ -15,8 +15,7 @@
                        [react "*"]]
         :root :target-path}
 
-  :plugins [[org.bodil/lein-noderepl "0.1.11"]
-            [lein-cljsbuild "1.0.6"]
+  :plugins [[lein-cljsbuild "1.0.6"]
             [lein-npm "0.6.1"]
             [lein-figwheel "0.3.8-SNAPSHOT"]]
 
@@ -39,7 +38,15 @@
              :css-dirs ["resources/public/css"]}
 
   :cljsbuild {:builds
-              {:server
+              {:app
+               {:source-paths ["src/cljs"]
+                :compiler {:output-to "resources/public/js/out/app.js"
+                           :output-dir "resources/public/js/out/lib"
+                           :asset-path "js/out/lib"
+                           :main app.core
+                           :optimizations :none}}
+
+               :server
                {:source-paths ["src/node"]
                 :compiler {:target :nodejs
                            :output-to "target/server/main.js"
@@ -47,25 +54,17 @@
                            :asset-path "server/lib"
                            :main server.core
                            :optimizations :none}
-                :notify-command ["bin/dependency-patch.sh"]}
-
-               :app
-               {:source-paths ["src/cljs"]
-                :compiler {:output-to "resources/public/js/out/app.js"
-                           :output-dir "resources/public/js/out/lib"
-                           :asset-path "js/out/lib"
-                           :main app.core
-                           :optimizations :none}}}}
+                :notify-command ["bin/dependency-patch.sh"]}}}
 
   :profiles {:dev
              {:cljsbuild
               {:builds
-               {:server
+               {:app
                 {:compiler {:pretty-print true}
-                 :figwheel {:heads-up-display false}}
-                :app
+                 :figwheel true}
+                :server
                 {:compiler {:pretty-print true}
-                 :figwheel true}}}
+                 :figwheel {:heads-up-display false}}}}
               :npm {:dependencies [[ws "*"]]}}
 
              :prod
