@@ -2,7 +2,8 @@
 
 Clojurescript based reference SPA on Heroku using node express, bootstrap,
 reactjs/reagent and Kioo templates, demonstrating "isomorphic" clojurescript
-shared between frontend and backend.
+shared between frontend and backend and Figwheel hotloading code changes
+to both.
 
 Check it out at https://cljsnode.herokuapp.com
 
