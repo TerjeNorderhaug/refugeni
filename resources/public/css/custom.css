@@ -1,4 +1,14 @@
 
+#forkme img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    z-index: 100;
+    width: 15em;
+    opacity: 0.6;
+}
+
 #jokes {
     font-size: larger;
     margin-top: 1em;
