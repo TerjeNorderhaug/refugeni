@@ -1,6 +1,10 @@
 # cljsnode
 
-Clojurescript based SPA using node express on Heroku.
+Clojurescript based reference SPA on Heroku using node express, bootstrap,
+reactjs/reagent and Kioo templates, demonstrating "isomorphic" clojurescript
+shared between frontend and backend.
+
+Check it out at https://cljsnode.herokuapp.com
 
 ## Run Locally
 
@@ -21,9 +25,6 @@ To start a server on Heroku:
     heroku open
 
 This will open the site in your browser.
-
-Alternatively check out at:
-https://cljsnode.herokuapp.com
 
 ## Development Workflow
 
