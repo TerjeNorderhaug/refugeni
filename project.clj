@@ -7,12 +7,17 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.48"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [reagent "0.5.0"]]
+                 [reagent "0.5.0"]
+                 [enfocus "2.1.1"]
+                 [kioo "0.4.1-SNAPSHOT"]
+                 ]
 
   :npm {:dependencies [[express "4.13.3"]
                        [xmlhttprequest "*"]
+                       [xmldom "0.1.19"]
                        [source-map-support "*"]
                        [react "*"]]
+        :package {}
         :root :target-path}
 
   :plugins [[lein-cljsbuild "1.0.6"]
@@ -25,29 +30,32 @@
 
   :aliases {"start" ["npm" "start"]}
 
-  :main "server/main.js"
+  :main "server/lib/polyfill/boot.js"
+;  :main "server/lib/boot.js"
 
-  :source-paths ["src/cljs/app"]
+  :source-paths ["src/cljs"]
 
   :clean-targets ^{:protect false} [[:cljsbuild :builds :server :compiler :output-to]
                                     [:cljsbuild :builds :app :compiler :output-to]
                                     :target-path :compile-path]
 
-  :figwheel {:server-logfile "logs/figwheel.log"
-             :http-server-root "public"
-             :css-dirs ["resources/public/css"]}
+  :figwheel {:http-server-root "public"
+             :css-dirs ["resources/public/css"]
+             :server-logfile "logs/figwheel.log"}
 
   :cljsbuild {:builds
               {:app
-               {:source-paths ["src/cljs"]
+               {:source-paths ["src/browser" "src/cljs"]
                 :compiler {:output-to "resources/public/js/out/app.js"
                            :output-dir "resources/public/js/out/lib"
                            :asset-path "js/out/lib"
-                           :main app.core
+                           :main app.start
                            :optimizations :none}}
 
+ ;; ## Eliminate /lib from bnoth app and server - if it still works...
+
                :server
-               {:source-paths ["src/node"]
+               {:source-paths ["src/node" "src/cljs"]
                 :compiler {:target :nodejs
                            :output-to "target/server/main.js"
                            :output-dir "target/server/lib"

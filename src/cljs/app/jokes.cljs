@@ -5,19 +5,22 @@
    [cljs.core.async :as async :refer [chan close! timeout put!]]
    [app.json :as json :refer [fetch-json]]))
 
+(def endpoint {:url "http://api.icndb.com/jokes/random"
+               :extract #(get-in % ["value" "joke"]) })
+
 (defn fresh-jokes
   "Channel buffering collections of n jokes from The Internet Chuck Norris Database"
   ([n] (fresh-jokes n 1))
   ([n buf & {:keys [concur] :or {concur n}}]
    (let [out (chan buf (comp
-                        (map #(get-in % ["value" "joke"]))
+                        (map (:extract endpoint))
                         (partition-all n)))]
      (async/pipeline-async concur out
-                           #(fetch-json %1 (fn [v](put! %2 v (partial close! %2))))
-                           ; Preferable but cannot do yet due to bug in core.async:
-                           ; http://dev.clojure.org/jira/browse/ASYNC-108
-                           ; (async/to-chan (repeat "http://api.icndb.com/jokes/random")
+                           (fn [url ch](fetch-json url #(put! ch % (partial close! ch))))
+                             ;; Preferable but cannot do yet due to bug in core.async:
+                             ;; http://dev.clojure.org/jira/browse/ASYNC-108
+                             ;; (async/to-chan (repeat (:url endpoint)))
                            (let [ch (chan n)]
-                             (async/onto-chan ch (repeat "http://api.icndb.com/jokes/random"))
+                             (async/onto-chan ch (repeat (:url endpoint)))
                              ch))
      out)))

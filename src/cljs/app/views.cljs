@@ -1,21 +1,46 @@
 (ns app.views
   (:require
-   [reagent.core :as reagent :refer [atom]]))
+   [kioo.reagent :refer [html-content content append after set-attr do->
+                         substitute listen unwrap]]
+   [kioo.core :refer [handle-wrapper]]
+   [reagent.core :as reagent :refer [atom]])
+  (:require-macros
+   [kioo.reagent :refer [defsnippet deftemplate snippet]]))
+
+;; Showcasing combining different ways to generate the markup for the page:
+;; 1. Hiccup-style templating with elements as inline clojure vectors;
+;; 2. Kioo (enlive style) injecting transformations into external template;
+;;    The template file is in the resources directory.
+
+(defn jokes-view-1 [jokes]
+  [:div.row
+   (for [joke jokes]
+     ^{:key joke}
+     [:div.joke-card.col-xs-12.col-sm-6.col-md-3
+      [:div.well
+       [:div.joke joke]]])])
+
+(defsnippet joke-card "template.html" [:main :.joke-card]
+  [joke]
+  {[:.joke] (content joke) })
+
+(defsnippet jokes-view-2 "template.html" [:main :.row]
+  [jokes]
+  {[:.joke-card] (substitute (map joke-card jokes)) })
+
+;; Template for the html page.
+;; Use either of the jokes-view-* templates from above:
+
+(def jokes-view jokes-view-2)
+
+(defsnippet jokes-page "template.html" [:html]
+  [jokes & {:keys [scripts]}]
+  {[:main] (content [jokes-view jokes])
+   [:body] (append [:div (for [src scripts] [:script src])]) })
 
 (defn html5 [content]
   (str "<!DOCTYPE html>\n"
-       (reagent/render-to-static-markup content)))
+       (reagent/render-to-string content)))
 
-(defn jokes-view [jokes]
-  [:div (for [content jokes]
-          ^{:key content}
-          [:p content])])
-
-(defn jokes-page [lines & {:keys [scripts]}]
-  [:html
-   [:title "Jokes"]
-   [:main {:id "jokes"}
-    [jokes-view lines]]
-   (for [src scripts]
-     ^{:key src}
-     [:script src]) ])
+(defn test-views []
+  (html5 (jokes-page ["Chuck Norris eats parentheses for breakfast"])))

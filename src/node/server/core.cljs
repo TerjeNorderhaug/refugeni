@@ -1,11 +1,14 @@
 (ns server.core
-  (:require-macros [cljs.core.async.macros :as m :refer [go go-loop alt!]])
-  (:require [cljs.nodejs :as nodejs]
-            [cljs.core.async :as async :refer [chan close! timeout put!]]
-            [server.compat]
-            [reagent.core :as reagent :refer [atom]]
-            [app.jokes :as jokes :refer [fresh-jokes]]
-            [app.views :refer [html5 jokes-page]]))
+  (:require-macros
+   [cljs.core.async.macros :as m :refer [go go-loop alt!]])
+  (:require
+   [polyfill.boot] ; ## require this in compat instead...
+   [polyfill.compat]
+   [cljs.nodejs :as nodejs]
+   [cljs.core.async :as async :refer [chan close! timeout put!]]
+   [reagent.core :as reagent :refer [atom]]
+   [app.jokes :as jokes :refer [fresh-jokes]]
+   [app.views :refer [jokes-page html5]]))
 
 (enable-console-print!)
 
@@ -24,7 +27,7 @@
                      (html5))))))
 
 (defn server [handler port success]
-  (let [jokes (fresh-jokes 5 2)]
+  (let [jokes (fresh-jokes 8 2)]
     (doto (express)
       (.get "/" #(handler jokes %1 %2))
       (.use (.static express "../resources/public"))
