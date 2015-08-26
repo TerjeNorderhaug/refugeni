@@ -11,7 +11,7 @@ Check it out at https://cljsnode.herokuapp.com
 
 To start a server on your own computer:
 
-    lein do deps, compile
+    lein do clean, deps, compile
     lein npm start
 
 Point your browser to the displayed local port.
