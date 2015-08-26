@@ -80,7 +80,7 @@
               :cljsbuild
               {:builds
                {:server
-                {:compiler {:optimizations :simple
+                {:compiler {:optimizations :none
                             :pretty-print false}}
                 :app
                 {:compiler {:output-dir "target/app/out"
