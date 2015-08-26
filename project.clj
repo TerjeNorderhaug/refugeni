@@ -31,7 +31,6 @@
   :aliases {"start" ["npm" "start"]}
 
   :main "server/lib/polyfill/boot.js"
-;  :main "server/lib/boot.js"
 
   :source-paths ["src/cljs"]
 
