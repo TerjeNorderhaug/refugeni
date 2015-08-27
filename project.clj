@@ -9,8 +9,7 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [reagent "0.5.0"]
                  [enfocus "2.1.1"]
-                 [kioo "0.4.1-SNAPSHOT"]
-                 ]
+                 [kioo "0.4.1-SNAPSHOT"]]
 
   :npm {:dependencies [[express "4.13.3"]
                        [xmlhttprequest "*"]
@@ -30,7 +29,7 @@
 
   :aliases {"start" ["npm" "start"]}
 
-  :main "server/lib/polyfill/boot.js"
+  :main "target/server/main.js" ; server/polyfill/boot.js
 
   :source-paths ["src/cljs"]
 
@@ -46,19 +45,17 @@
               {:app
                {:source-paths ["src/browser" "src/cljs"]
                 :compiler {:output-to "resources/public/js/out/app.js"
-                           :output-dir "resources/public/js/out/lib"
-                           :asset-path "js/out/lib"
+                           :output-dir "resources/public/js/out"
+                           :asset-path "js/out"
                            :main app.start
                            :optimizations :none}}
-
- ;; ## Eliminate /lib from bnoth app and server - if it still works...
 
                :server
                {:source-paths ["src/node" "src/cljs"]
                 :compiler {:target :nodejs
                            :output-to "target/server/main.js"
-                           :output-dir "target/server/lib"
-                           :asset-path "server/lib"
+                           :output-dir "target/server"
+                           :asset-path "server"
                            :main server.core
                            :optimizations :none}
                 :notify-command ["bin/dependency-patch.sh"]}}}

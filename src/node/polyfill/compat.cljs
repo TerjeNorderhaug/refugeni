@@ -1,9 +1,10 @@
 (ns polyfill.compat
   (:require
+   [polyfill.boot]
    [cljs.nodejs :as nodejs]))
 
 "
-Load this before any module that depends on basic browser context.
+Load before any module that depends on basic browser context.
 You may have to use (.require js/goog) before the ns delcaration as
 the cljs compiler results in arbitrary order of required modules.
 goog.require is supposed to be synchronous when used under node,

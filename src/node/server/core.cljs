@@ -2,7 +2,6 @@
   (:require-macros
    [cljs.core.async.macros :as m :refer [go go-loop alt!]])
   (:require
-   [polyfill.boot] ; ## require this in compat instead...
    [polyfill.compat]
    [cljs.nodejs :as nodejs]
    [cljs.core.async :as async :refer [chan close! timeout put!]]
