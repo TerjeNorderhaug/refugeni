@@ -11,7 +11,7 @@
 
 (defn activate []
   (let [el (dom/getElement "jokes")
-        jokes-buf (fresh-jokes 8 3 :concur 24)
+        jokes-buf (fresh-jokes 12 3 :concur 24)
         jokes (atom nil)
         user-action (chan)]
     (events/listen el events/EventType.CLICK

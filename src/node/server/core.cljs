@@ -26,7 +26,7 @@
                      (html5))))))
 
 (defn server [handler port success]
-  (let [jokes (fresh-jokes 8 2)]
+  (let [jokes (fresh-jokes 12 2)]
     (doto (express)
       (.get "/" #(handler jokes %1 %2))
       (.use (.static express "../resources/public"))
