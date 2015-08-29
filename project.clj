@@ -15,7 +15,7 @@
                        [xmlhttprequest "*"]
                        [xmldom "0.1.19"]
                        [source-map-support "*"]
-                       [react "*"]]
+                       [react "0.13.3"]]
         :package {}
         :root :target-path}
 
@@ -51,7 +51,8 @@
                            :optimizations :none}}
 
                :server
-               {:source-paths ["src/node" "src/cljs"]
+               {:target-path "target/server"
+                :source-paths ["src/node" "src/cljs"]
                 :compiler {:target :nodejs
                            :output-to "target/server/main.js"
                            :output-dir "target/server"
@@ -76,7 +77,10 @@
               :cljsbuild
               {:builds
                {:server
-                {:compiler {:optimizations :none
+                {:compiler {:optimizations :simple
+                            :foreign-libs [{:file "src/node/polyfill/simple.js"
+                                            :provides ["polyfill.compat"]
+                                            :requires [] }]
                             :pretty-print false}}
                 :app
                 {:compiler {:output-dir "target/app/out"

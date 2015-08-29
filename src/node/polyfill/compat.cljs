@@ -1,6 +1,5 @@
 (ns polyfill.compat
   (:require
-   [polyfill.boot]
    [cljs.nodejs :as nodejs]))
 
 "
@@ -20,12 +19,14 @@ but that doesn't seem to be the case, which may require additional concerns.
 ;; Required for goog.net.XhrIo on node:
 
 (def xhr (nodejs/require "xmlhttprequest"))
-(set! js/XMLHttpRequest (.-XMLHttpRequest xhr))
+(when xhr
+  (set! js/XMLHttpRequest (.-XMLHttpRequest xhr)))
 
 ;; Reagent uses js/React:
 
 (def react (nodejs/require "react"))
-(aset js/global "React" react) ; work-arounds "constant React assigned a value more than once."
+(when react
+  (aset js/global "React" react)) ; work-arounds "constant React assigned a value more than once."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; DOM
@@ -61,10 +62,27 @@ but that doesn't seem to be the case, which may require additional concerns.
     </body>
   </html>")
 
-(def doc (.parseFromString (new dom-parser) xhtml "application/xml"))
-(set! js/document doc)
-(set! goog.global.document doc)
-(aset js/global "document" doc)
+; (def doc (.parseFromString (new dom-parser) xhtml "application/xml"))
+
+(defn default-html-markup [& [title]]
+  (str "<html><head>" ; per spec, don't change markup
+       (if title (str "<title>" title "</title>"))
+       "</head><body></body></html>"))
+
+(defn html-from-string [& [html]]
+  (let [parser (new dom-parser)
+        markup (or html (default-html-markup))
+        frag (.parseFromString parser markup "text/html")]
+    frag))
+
+(def doc (html-from-string (default-html-markup "untitled")))
+
+(when-not (aget js/global "document")
+  ; (set! js/document doc)
+  (aset js/global "document" doc)) ; avoid compiler reset constant error
+
+(when-not (try goog.global.document (catch js/Error e false))
+  (set! goog.global.document doc))
 
 (def dom-implementation (.-implementation doc))
 
@@ -135,11 +153,11 @@ but that doesn't seem to be the case, which may require additional concerns.
 
 (def div (.createElement js/document "div"))
 
-(defn prototype-of [obj] ; works
-  (.getPrototypeOf js/Object obj))
+(defn prototype-of [instance] ; works
+  (.getPrototypeOf js/Object instance))
 
-(defn object-prototype [obj]
-  (.-prototype obj))
+(defn type-prototype [type] ;; ## rename to type-prototype
+  (.-prototype type))
 
 (defn object-keys [obj]
   (.keys js/Object obj))
@@ -147,11 +165,6 @@ but that doesn't seem to be the case, which may require additional concerns.
 (defn defproperty [prototype prop-name {:as descriptor}]
   "deftype on a native level"
   (.defineProperty js/Object prototype prop-name (clj->js descriptor)))
-
-(defn html-from-string [html]
-  (let [parser (new dom-parser)
-        frag (.parseFromString parser html "text/html")]
-    frag))
 
 (defn append-html [node html]
   (let [frag (html-from-string html)
@@ -173,7 +186,7 @@ but that doesn't seem to be the case, which may require additional concerns.
 ;; PROTOTYPES
 
 (def dom-implementation-prototype
-  (object-prototype (.-DOMImplementation dom)))
+  (type-prototype (.-DOMImplementation dom)))
 
 (def element-prototype (prototype-of div)) ; fails on print, but still OK
 
@@ -188,7 +201,6 @@ but that doesn't seem to be the case, which may require additional concerns.
 ;; redo in case node prototypes areB cached:
 
 (def doc2 (.parseFromString (new dom-parser) xhtml "application/xml"))
-(set! js/document doc2)
 
 (def node (.createElement js/document "main"))
 
@@ -212,6 +224,28 @@ but that doesn't seem to be the case, which may require additional concerns.
     (set! (.-__proto__ inst) p)
     inst))
 
+(defn override-prototype [obj prototype & [type]]
+  (set! (.-prototype obj)
+        (merge
+         (if type (type-prototype type) #{})
+         prototype))
+  (set! (.-__proto__ obj)
+        (merge
+         (if type (proto type) #{})
+         prototype))
+  obj)
+
+(defn clone-merge ; rename to mutate-prototype or merge-prototype
+  ;; ... use clone-merge for one with only create?
+  "The object merged with the js prototype"
+  [type prototype]
+  ;; Object.assign is possibly the better choice but not yet in Node
+  ;; ## need to validate that this actually mutate shared prototype
+  ;; ## which may not be the case vs override-prototype
+  ;; ## need to copy the merge into the original object?
+  (let [combo (.create js/Object prototype (type-prototype type))]
+    (override-prototype type (type-prototype combo))))
+
 (defn prototype-constructor [p]
   (.-constructor p))
 
@@ -224,15 +258,14 @@ but that doesn't seem to be the case, which may require additional concerns.
 (def node-prototype ; apparently correct so dont change
   (-> document-prototype proto))
 
-(defn override-prototype [obj prototype]
-  (set! (.-prototype obj) prototype)
-  (set! (.-__proto__ obj) prototype)
-  type)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (deftype Node [] Object)
-(override-prototype Node node-prototype)
-
+(override-prototype Node node-prototype (aget js/global "Node"))
 (set! js/Node Node)
+;(set! js/Node
+;      (clone-merge (or (aget js/global "Node") Node)
+;                    node-prototype))
 
 ; for testing - from hickory
 (defn extend-type-with-seqable
@@ -253,9 +286,15 @@ but that doesn't seem to be the case, which may require additional concerns.
 (def nodelist-prototype (prototype-of (.-childNodes doc)))
 
 (deftype NodeList [] Object)
-(override-prototype NodeList nodelist-prototype)
-
+(override-prototype NodeList nodelist-prototype (aget js/global "NodeList"))
 (set! js/NodeList NodeList)
+;;(set! js/NodeList
+;;      (clone-merge (if (= js/undefined (aget js/global "NodeList"))
+;;                     NodeList
+;;                    (aget js/global "NodeList"))
+;;                    nodelist-prototype))
+
+(extend-type-with-seqable js/NodeList) ; test
 
 ; (set! (.-innerHTML node) "<p>hello</p>")
 
@@ -269,9 +308,8 @@ but that doesn't seem to be the case, which may require additional concerns.
   (Document.))
 
 (defn create-html-document [implementation & [title]]
-  (let [html (str "<html><head>" ; per spec, don't change markup
-                  (if title (str "<title>" title "</title>"))
-                  "</head><body></body></html>")
+  ;; Per specification
+  (let [html (default-html-markup title)
         doctype (.createDocumentType implementation "html")
         doc (.createDocument implementation "" nil)]
     (.appendChild doc (.importNode doc doctype))
