@@ -29,7 +29,7 @@
   (let [jokes (fresh-jokes 12 2)]
     (doto (express)
       (.get "/" #(handler jokes %1 %2))
-      (.use (.static express "../resources/public"))
+      (.use (.static express "resources/public"))
       (.listen port success))))
 
 (defn -main [& mess]

@@ -10,3 +10,5 @@ pom.xml.asc
 /.nrepl-port
 /resources/public/js/out
 /logs
+/node_modules
+main.js

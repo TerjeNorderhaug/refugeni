@@ -17,7 +17,7 @@
                        [source-map-support "*"]
                        [react "0.13.3"]]
         :package {}
-        :root :target-path}
+        :root :root}
 
   :plugins [[lein-cljsbuild "1.0.6"]
             [lein-npm "0.6.1"]
@@ -35,6 +35,7 @@
 
   :clean-targets ^{:protect false} [[:cljsbuild :builds :server :compiler :output-to]
                                     [:cljsbuild :builds :app :compiler :output-to]
+                                    "node_modules"
                                     :target-path :compile-path]
 
   :figwheel {:http-server-root "public"
@@ -51,15 +52,15 @@
                            :optimizations :none}}
 
                :server
-               {:target-path "target"
+               {; :target-path "target"
                 :source-paths ["src/node" "src/cljs"]
                 :compiler {:target :nodejs
-                           :output-to "target/main.js"
+                           :output-to "main.js"
                            :output-dir "target"
-                           :asset-path ""
+                          ; :asset-path "target"
                            :main server.core
                            :optimizations :none}
-                :notify-command ["bin/dependency-patch.sh"]}}}
+                }}}
 
   :profiles {:dev
              {:cljsbuild
