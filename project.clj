@@ -29,7 +29,7 @@
 
   :aliases {"start" ["npm" "start"]}
 
-  :main "server/main.js"
+  :main "main.js"
 
   :source-paths ["src/cljs"]
 
@@ -51,12 +51,12 @@
                            :optimizations :none}}
 
                :server
-               {:target-path "target/server"
+               {:target-path "target"
                 :source-paths ["src/node" "src/cljs"]
                 :compiler {:target :nodejs
-                           :output-to "target/server/main.js"
-                           :output-dir "target/server"
-                           :asset-path "server"
+                           :output-to "target/main.js"
+                           :output-dir "target"
+                           :asset-path ""
                            :main server.core
                            :optimizations :none}
                 :notify-command ["bin/dependency-patch.sh"]}}}
