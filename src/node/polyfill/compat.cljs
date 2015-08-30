@@ -1,6 +1,7 @@
 (ns polyfill.compat
   (:require
-   [cljs.nodejs :as nodejs]))
+   [cljs.nodejs :as nodejs]
+   [polyfill.simple]))
 
 "
 Load before any module that depends on basic browser context.
