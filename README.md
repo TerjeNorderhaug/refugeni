@@ -40,7 +40,7 @@ automatic builds and code loading:
 Wait until Figwheel is ready to connect, then
 start a server in another terminal:
 
-    lein npm start
+    lein run
 
 Open the displayed URL in a browser.
 Figwheel will push code changes to the app and server.
