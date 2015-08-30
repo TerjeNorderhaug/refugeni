@@ -14,6 +14,7 @@ A goal is to turn this into a Leiningen template.
 
 To start a server on your own computer:
 
+    lein do clean, deps, compile
     lein run
 
 Point your browser to the displayed local port.
@@ -43,10 +44,6 @@ start a server in another terminal:
 
 Open the displayed URL in a browser.
 Figwheel will push code changes to the app and server.
-
-## Troubleshooting
-
-    lein do clean, deps, compile
 
 ## License
 
