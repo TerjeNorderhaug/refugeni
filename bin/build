@@ -31,4 +31,5 @@ fi
 
 echo "=====> ClojureScript with npm:"
 cd $BUILD_DIR
+rm $BUILD_DIR/package.json
 lein with-profile prod do deps, compile
