@@ -12,3 +12,4 @@ pom.xml.asc
 /logs
 /node_modules
 main.js
+package.json

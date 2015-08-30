@@ -52,12 +52,10 @@
                            :optimizations :none}}
 
                :server
-               {; :target-path "target"
-                :source-paths ["src/node" "src/cljs"]
+               {:source-paths ["src/node" "src/cljs"]
                 :compiler {:target :nodejs
                            :output-to "main.js"
                            :output-dir "target"
-                          ; :asset-path "target"
                            :main server.core
                            :optimizations :none}
                 }}}
