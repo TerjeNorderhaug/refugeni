@@ -29,7 +29,7 @@
 
   :aliases {"start" ["npm" "start"]}
 
-  :main "target/server/main.js" ; server/polyfill/boot.js
+  :main "server/main.js"
 
   :source-paths ["src/cljs"]
 
