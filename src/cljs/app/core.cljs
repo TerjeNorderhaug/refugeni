@@ -11,13 +11,16 @@
 
 (defn activate []
   (let [el (dom/getElement "jokes")
-        jokes-buf (fresh-jokes 12 3 :concur 24)
+        joke-num 12
+        buf-size 3
+        jokes-buf (fresh-jokes joke-num buf-size :concur (* joke-num buf-size))
         jokes (atom nil)
         user-action (chan)]
     (events/listen el events/EventType.CLICK
                    (partial put! user-action))
-    (go
-      (while (some? (<! user-action))
-        (when-not @jokes
+    (go-loop [initialized false]
+      (when (some? (<! user-action))
+        (reset! jokes (<! jokes-buf))
+        (when-not initialized
           (reagent/render [#(jokes-view @jokes)] el))
-          (reset! jokes (<! jokes-buf))))))
+        (recur true)))))
