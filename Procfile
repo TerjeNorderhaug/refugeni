@@ -1,1 +1,1 @@
-web: lein npm start
+web: lein trampoline run
