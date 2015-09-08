@@ -9,7 +9,7 @@
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [reagent "0.5.0"]
                  [enfocus "2.1.1"]
-                 [kioo "0.4.1-SNAPSHOT"]]
+                 [kioo "0.4.1"]]
 
   :npm {:dependencies [[express "4.13.3"]
                        [xmlhttprequest "*"]
@@ -19,9 +19,9 @@
         :package {}
         :root :root}
 
-  :plugins [[lein-cljsbuild "1.0.6"]
+  :plugins [[lein-cljsbuild "1.1.0"]
             [lein-npm "0.6.1"]
-            [lein-figwheel "0.3.8-SNAPSHOT"]]
+            [lein-figwheel "0.3.9"]]
 
   :min-lein-version "2.1.2"
 

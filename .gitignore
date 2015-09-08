@@ -11,5 +11,6 @@ pom.xml.asc
 /resources/public/js/out
 /logs
 /node_modules
+npm-debug.log
 main.js
 package.json
