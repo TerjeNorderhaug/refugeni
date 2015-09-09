@@ -3,7 +3,8 @@
    [cljs.core.async.macros :refer [go go-loop alt!]])
   (:require
    [cljs.core.async :as async :refer [chan close! timeout put!]]
-   [app.json :as json :refer [fetch-json]]))
+   [app.json :as json :refer [fetch-json]]
+   [clojure.string :as string :refer [replace]]))
 
 (def endpoint {:url "http://api.icndb.com/jokes/random"
                :extract #(get-in % ["value" "joke"]) })
@@ -14,6 +15,7 @@
   ([n buf & {:keys [concur] :or {concur n}}]
    (let [out (chan buf (comp
                         (map (:extract endpoint))
+                        (map #(replace % #"&quot;" "\""))
                         (partition-all n)))]
      (async/pipeline-async concur out
                            (fn [url ch](fetch-json url #(put! ch % (partial close! ch))))
