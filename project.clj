@@ -7,8 +7,7 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.48"]
                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [reagent "0.5.0"]
-                 [enfocus "2.1.1"]
+                 [reagent "0.5.1"]
                  [kioo "0.4.1"]]
 
   :npm {:dependencies [[express "4.13.3"]
@@ -16,7 +15,6 @@
                        [xmldom "0.1.19"]
                        [source-map-support "*"]
                        [react "0.13.3"]]
-        :package {}
         :root :root}
 
   :plugins [[lein-cljsbuild "1.1.0"]

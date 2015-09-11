@@ -36,7 +36,7 @@
 (defsnippet jokes-page "template.html" [:html]
   [jokes & {:keys [scripts]}]
   {[:main] (content [jokes-view jokes])
-   [:body] (append [:div (for [src scripts] [:script src])]) })
+   [:body] (append [:div (for [src scripts] [:script {:key src} src])]) })
 
 (defn html5 [content]
   (str "<!DOCTYPE html>\n"
