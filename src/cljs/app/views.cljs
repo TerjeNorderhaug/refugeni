@@ -3,7 +3,8 @@
    [kioo.reagent :refer [html-content content append after set-attr do->
                          substitute listen unwrap]]
    [kioo.core :refer [handle-wrapper]]
-   [reagent.core :as reagent :refer [atom]])
+   [reagent.core :as reagent :refer [atom]]
+   [goog.string :as gstring])
   (:require-macros
    [kioo.reagent :refer [defsnippet deftemplate snippet]]))
 
@@ -15,7 +16,7 @@
 (defn jokes-view-1 [jokes]
   [:div.row
    (for [joke jokes]
-     ^{:key joke}
+     ^{:key (gstring/hashCode joke)}
      [:div.joke-card.col-xs-12.col-sm-6.col-md-4.col-lg-3
       [:div.well
        [:div.joke joke]]])])
@@ -28,15 +29,18 @@
   [jokes]
   {[:.joke-card] (substitute (map joke-card jokes)) })
 
-;; Template for the html page.
 ;; Use either of the jokes-view-* templates from above:
 
 (def jokes-view jokes-view-2)
 
+;; Template for the html page:
+
 (defsnippet jokes-page "template.html" [:html]
   [jokes & {:keys [scripts]}]
   {[:main] (content [jokes-view jokes])
-   [:body] (append [:div (for [src scripts] [:script {:key src} src])]) })
+   [:body] (append [:div (for [src scripts]
+                           ^{:key (gstring/hashCode (pr-str src))}
+                           [:script src])]) })
 
 (defn html5 [content]
   (str "<!DOCTYPE html>\n"
