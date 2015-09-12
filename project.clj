@@ -18,8 +18,7 @@
         :root :root}
 
   :plugins [[lein-cljsbuild "1.1.0"]
-            [lein-npm "0.6.1"]
-            [lein-figwheel "0.3.9"]]
+            [lein-npm "0.6.1"]]
 
   :min-lein-version "2.1.2"
 
@@ -59,13 +58,17 @@
                 }}}
 
   :profiles {:dev
-             {:cljsbuild
+             {:plugins
+              [lein-figwheel "0.3.9"]]
+              :cljsbuild
               {:builds
                {:app
                 {:compiler {:pretty-print true}
+                 :source-map true
                  :figwheel true}
                 :server
                 {:compiler {:pretty-print true}
+                 :source-map true
                  :figwheel {:heads-up-display false}}}}
               :npm {:dependencies [[ws "*"]]}}
 
