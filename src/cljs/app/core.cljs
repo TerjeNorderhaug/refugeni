@@ -7,7 +7,23 @@
    [goog.events :as events]
    [reagent.core :as reagent :refer [atom]]
    [app.jokes :refer [fresh-jokes]]
-   [app.views :refer [jokes-view]]))
+   [app.views :refer [jokes-view jokes-page html5]]))
+
+(def scripts [{:src "/js/out/app.js"}
+              "main_cljs_fn()"])
+
+(def jokes-chan
+  (memoize #(fresh-jokes 12 2)))
+
+(defn static-page []
+  (let [out (chan 1)]
+    (go
+      (put! out
+            (-> (<! (jokes-chan))
+                (jokes-page :scripts scripts)
+                (reagent/render-to-string)
+                (html5))))
+    out))
 
 (defn activate []
   (let [el (dom/getElement "jokes")

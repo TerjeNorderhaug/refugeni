@@ -43,8 +43,7 @@
                            [:script src])]) })
 
 (defn html5 [content]
-  (str "<!DOCTYPE html>\n"
-       (reagent/render-to-string content)))
+  (str "<!DOCTYPE html>\n" content))
 
 (defn test-views []
   (html5 (jokes-page ["Chuck Norris eats parentheses for breakfast"])))
