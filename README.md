@@ -1,14 +1,9 @@
-# cljsnode
+# refugeni
 
 Clojurescript based reference SPA on Heroku using node express, bootstrap,
 reactjs/reagent and Kioo templates, demonstrating "isomorphic" clojurescript
 shared between frontend and backend and Figwheel hotloading code changes
 to both.
-
-Check it out at https://cljsnode.herokuapp.com
-
-Fork on github as a starting point for your own projects.
-A goal is to turn this into a Leiningen template.
 
 ## Run Locally
 
@@ -48,8 +43,6 @@ Figwheel will push code changes to the app and server.
 ## License
 
 Copyright © 2015 Terje Norderhaug
-
-Based on an app concept by Marian Schubert.
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
